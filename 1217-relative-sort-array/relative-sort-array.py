@@ -5,17 +5,20 @@ class Solution(object):
         :type arr2: List[int]
         :rtype: List[int]
         """
-        result=[]
-
-        for i in range(len(arr2)):
-            for j in range(len(arr1)):
-                if arr2[i] == arr1[j]:
-                    result.append(arr1[j])
-
-        leftovers= [num for num in arr1 if num not in arr2]
-        leftovers.sort()
-
-        result.extend(leftovers)
+        from collections import Counter
+        count = Counter(arr1)
+        result = []
+        
+        # Place elements in arr2 order
+        for val in arr2:
+            result.extend([val] * count[val])
+            del count[val]
+        
+        # Place remaining elements sorted
+        leftovers = []
+        for val in sorted(count.keys()):
+            result.extend([val] * count[val])
+        
         return result
 
         
